@@ -3,387 +3,613 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OOKIES - Cookies Handmade</title>
+    <title>OOKIES | Premium Handmade Cookies</title>
     <style>
         :root {
-            --primary: #f6e05e; /* Amarillo basado en el logo */
-            --dark: #2d3748;
-            --light: #f7fafc;
-            --white: #ffffff;
-            --gray: #a0aec0;
+            --primary: #F7D002;
+            --primary-dark: #D4B200;
+            --bg-dark: #121212;
+            --bg-card: #1E1E1E;
+            --text-light: #F5F5F5;
+            --text-muted: #A0A0A0;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
         }
 
+        /* Utilidades de Animación */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: var(--transition);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navbar Sticky */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            background: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(247, 208, 2, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .logo span { color: var(--primary); }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero Section */
         header {
-            background-color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, #2a2a2a 0%, var(--bg-dark) 70%);
+            overflow: hidden;
+        }
+
+        .hero-circles {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 40px solid rgba(247, 208, 2, 0.05);
+            border-radius: 50%;
+            animation: pulse 8s infinite alternate;
+            z-index: 0;
+        }
+
+        .hero-circles::after {
+            content: '';
+            position: absolute;
+            top: 50px; left: 50px; right: 50px; bottom: 50px;
+            border: 20px solid rgba(247, 208, 2, 0.08);
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); }
+            100% { transform: scale(1.1); }
+        }
+
+        .hero-content {
             text-align: center;
-            padding: 4rem 2rem;
-            border-bottom: 5px solid var(--primary);
+            z-index: 1;
+            padding: 0 2rem;
         }
 
         h1 {
-            font-size: 3rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
         }
 
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-            border-bottom: 2px solid var(--primary);
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .cta-btn {
+            background: var(--primary);
+            color: var(--bg-dark);
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: var(--transition);
             display: inline-block;
-            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 2rem;
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(247, 208, 2, 0.3);
+            background: var(--primary-dark);
         }
 
-        .locations {
+        /* Secciones Generales */
+        section {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+        }
+
+        /* Tabs Interactivos */
+        .tabs {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            font-size: 0.95rem;
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 8px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        section {
+            gap: 1rem;
             margin-bottom: 4rem;
+            flex-wrap: wrap;
         }
 
-        .grid-menu {
+        .tab-btn {
+            background: transparent;
+            border: 2px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: var(--transition);
+            text-transform: uppercase;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--bg-dark);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grid de Productos */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
 
         .card {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(247, 208, 2, 0.03), transparent);
+            transform: translateX(-100%);
+            transition: var(--transition);
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            border-color: rgba(247, 208, 2, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        .item-header {
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
 
-        .item-title {
+        .item-name {
+            font-size: 1.5rem;
             font-weight: bold;
-            font-size: 1.2rem;
-            text-transform: uppercase;
+            color: var(--text-light);
         }
 
         .item-price {
-            font-weight: bold;
+            font-size: 1.2rem;
             color: var(--primary);
-            background: var(--dark);
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
+            font-weight: bold;
         }
 
         .item-desc {
-            font-size: 0.9rem;
-            color: #4a5568;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
-        .badge {
-            display: inline-block;
+        .badge-special {
+            position: absolute;
+            top: 0;
+            right: 0;
             background: var(--primary);
-            color: var(--dark);
+            color: var(--bg-dark);
+            padding: 0.5rem 1.5rem;
             font-size: 0.8rem;
             font-weight: bold;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
+            border-bottom-left-radius: 20px;
+            letter-spacing: 1px;
         }
 
-        table {
+        /* Tablas de Precios (Café y Combos) */
+        .price-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
-        th, td {
-            padding: 0.8rem;
+        .price-table th, .price-table td {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             text-align: left;
-            border-bottom: 1px solid #e2e8f0;
         }
 
-        th {
+        .price-table th {
+            color: var(--text-muted);
             text-transform: uppercase;
             font-size: 0.85rem;
-            color: var(--gray);
+            letter-spacing: 1px;
         }
 
-        .milk-options {
+        .price-table td.amount {
             text-align: right;
-            font-size: 0.85rem;
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #4a5568;
-        }
-
-        .combo-box {
-            background: var(--dark);
-            color: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .combo-box h3 {
             color: var(--primary);
-            margin-bottom: 1rem;
+            font-weight: bold;
         }
 
         .highlight-text {
             color: var(--primary);
-            font-weight: bold;
+        }
+
+        .discount-badge {
+            background: rgba(247, 208, 2, 0.1);
+            color: var(--primary);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            border: 1px solid var(--primary);
+        }
+
+        /* Footer y Ubicaciones */
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .location-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border-top: 3px solid var(--primary);
         }
 
         footer {
-            background: var(--dark);
-            color: var(--white);
+            background: #0a0a0a;
+            padding: 4rem 5%;
             text-align: center;
-            padding: 3rem 2rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        .contact-grid {
+        .footer-content {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            gap: 3rem;
             flex-wrap: wrap;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
-        a {
-            color: var(--primary);
+        .footer-item a {
+            color: var(--text-light);
             text-decoration: none;
+            transition: var(--transition);
         }
+        
+        .footer-item a:hover { color: var(--primary); }
     </style>
 </head>
 <body>
 
+    <nav>
+        <a href="#" class="logo">OOKIES<span>.</span></a>
+        <div class="nav-links">
+            <a href="#menu">Menú</a>
+            <a href="#locales">Locales</a>
+            <a href="#contacto">Contacto</a>
+        </div>
+    </nav>
+
     <header>
-        <h1>OOKIES</h1>
-        <div class="subtitle">Cookies Handmade - Artesanales y Únicas</div>
-        <div class="locations">
-            <div>
-                <strong>📍 PALERMO</strong><br>
-                Julián Álvarez 2795<br>
-                Mié a Dom: 12hs a 20hs
-            </div>
-            <div>
-                <strong>📍 MARTINEZ</strong><br>
-                UNICENTER<br>
-                Todos los días: 10hs a 22hs
-            </div>
-            <div>
-                <strong>🛵 DELIVERY</strong><br>
-                Envíos por Rappi
-            </div>
+        <div class="hero-circles"></div>
+        <div class="hero-content reveal active">
+            <h1>COOKIES<br>ARTESANALES</h1>
+            <p class="hero-subtitle">Masa exclusiva. Rellenos generosos. Calidad premium.</p>
+            <a href="#menu" class="cta-btn">Ver Catálogo</a>
         </div>
     </header>
 
-    <main>
-        <section>
-            <h2>Nuestras Cookies</h2>
-            <p style="margin-bottom: 2rem;">Valor unitario: <strong>$6.000</strong></p>
-            
-            <div class="grid-menu">
-                <div class="card">
-                    <div class="item-header">
-                        <span class="item-title">Red Velvet</span>
+    <section id="menu">
+        <h2 class="section-title reveal">Nuestro Menú</h2>
+        
+        <div class="tabs reveal">
+            <button class="tab-btn active" onclick="openTab(event, 'cookies')">Línea Cookies</button>
+            <button class="tab-btn" onclick="openTab(event, 'combos')">Packs & Combos</button>
+            <button class="tab-btn" onclick="openTab(event, 'cafe')">Cafetería</button>
+        </div>
+
+        <div id="cookies" class="tab-content active">
+            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.2rem; color: var(--text-muted);" class="reveal">
+                Valor unitario: <strong style="color: var(--primary); font-size: 1.5rem;">$6.000</strong>
+            </p>
+            <div class="grid">
+                <div class="card reveal">
+                    <div class="card-header">
+                        <span class="item-name">Red Velvet</span>
                     </div>
-                    <div class="item-desc">Masa de vainilla con cacao y chocolate blanco.</div>
+                    <p class="item-desc">Masa de vainilla con cacao y chocolate blanco.</p>
                 </div>
                 
-                <div class="card">
-                    <div class="item-header">
-                        <span class="item-title">Doble Choco</span>
+                <div class="card reveal">
+                    <div class="card-header">
+                        <span class="item-name">Doble Choco</span>
                     </div>
-                    <div class="item-desc">Masa de vainilla con choco semi amargo y de leche con escamas de sal marina.</div>
+                    <p class="item-desc">Masa de vainilla con choco semi amargo y de leche con escamas de sal marina.</p>
                 </div>
 
-                <div class="card">
-                    <div class="item-header">
-                        <span class="item-title">Kinder Nutella</span>
+                <div class="card reveal">
+                    <div class="card-header">
+                        <span class="item-name">Kinder Nutella</span>
                     </div>
-                    <div class="item-desc">Masa de vainilla con choco blanco y de leche, rellena de Nutella y Kinder Max.</div>
+                    <p class="item-desc">Masa de vainilla con choco blanco y de leche, rellena de Nutella y Kinder Max.</p>
                 </div>
 
-                <div class="card">
-                    <div class="item-header">
-                        <span class="item-title">Oreo</span>
+                <div class="card reveal">
+                    <div class="card-header">
+                        <span class="item-name">Oreo</span>
                     </div>
-                    <div class="item-desc">Masa de cacao con choco blanco, rellena de Nutella y Kinder Max.</div>
+                    <p class="item-desc">Masa de cacao con choco blanco, rellena de Nutella y Kinder Max.</p>
                 </div>
 
-                <div class="card">
-                    <div class="item-header">
-                        <span class="item-title">Nutella Rocher</span>
+                <div class="card reveal">
+                    <div class="card-header">
+                        <span class="item-name">Nutella Rocher</span>
                     </div>
-                    <div class="item-desc">Masa duo de vainilla y cacao con choco blanco y de leche, rellena de Nutella y avellanas.</div>
+                    <p class="item-desc">Masa duo de vainilla y cacao con choco blanco y de leche, rellena de Nutella y avellanas.</p>
                 </div>
 
-                <div class="card">
-                    <div class="item-header">
-                        <span class="item-title">Brownie</span>
+                <div class="card reveal">
+                    <div class="card-header">
+                        <span class="item-name">Brownie</span>
                     </div>
-                    <div class="item-desc">Masa de cacao con de leche, rellena de brownie.</div>
+                    <p class="item-desc">Masa de cacao con de leche, rellena de brownie.</p>
                 </div>
 
-                <div class="card" style="border: 2px solid var(--primary);">
-                    <div class="badge">ROTATIVA DEL MES</div>
-                    <div class="item-header">
-                        <span class="item-title">Snikers</span>
+                <div class="card reveal" style="border-color: var(--primary);">
+                    <div class="badge-special">MES</div>
+                    <div class="card-header">
+                        <span class="item-name">Snikers</span>
                     </div>
-                    <div class="item-desc">Masa de cacao con choco de leche, mantequilla de mani y caramelo.</div>
+                    <p class="item-desc">Masa de cacao con choco de leche, mantequilla de mani y caramelo.</p>
                 </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Packs y Promociones</h2>
-            <div class="grid-menu">
-                <div class="combo-box">
-                    <h3>Combo Degustación</h3>
-                    <p>1 cookie de cada sabor disponible</p>
-                    <p style="font-size: 1.5rem; margin-top: 1rem;"><span class="highlight-text">15% OFF</span></p>
-                </div>
-                
-                <div class="card">
-                    <h3>Pack de Cookies</h3>
-                    <table style="margin-top: 1rem;">
-                        <tr><td>Pack de 4</td><td style="text-align:right;">$24.000</td></tr>
-                        <tr><td>Pack de 6 + <span class="highlight-text">1 GRATIS</span></td><td style="text-align:right;">$36.000</td></tr>
-                        <tr><td>Pack de 8</td><td style="text-align:right;">$48.000</td></tr>
-                        <tr><td>Pack de 12 <br><small>($72.000 - 20% OFF)</small></td><td style="text-align:right; font-weight:bold;">$57.600</td></tr>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <h3>Combos con Café</h3>
-                    <table style="margin-top: 1rem;">
-                        <tr><td>1 Cookie + 1 Café Caliente</td><td style="text-align:right; color:red; font-weight:bold;">10% OFF</td></tr>
-                        <tr><td>2 Cookies + 1 Café Caliente/Frio</td><td style="text-align:right; color:red; font-weight:bold;">10% OFF</td></tr>
-                        <tr><td>4 Cookies + 2 Cafés Calientes/Frios</td><td style="text-align:right; color:red; font-weight:bold;">15% OFF</td></tr>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Cafetería</h2>
-            <div class="milk-options">
-                Tu leche de preferencia: Entera, Descremada, Deslactosada, Vegana
-            </div>
-
-            <div class="grid-menu">
-                <div class="card">
-                    <h3>Calientes</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Especialidad</th>
-                                <th>Chico (8 oz)</th>
-                                <th>Grande (12 oz)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Espresso</td><td>$3.000</td><td>-</td></tr>
-                            <tr><td>Doppio</td><td>$3.500</td><td>-</td></tr>
-                            <tr><td>Americano</td><td>$3.500</td><td>-</td></tr>
-                            <tr><td>Flatwhite</td><td>$4.500</td><td>-</td></tr>
-                            <tr><td>Lagrima</td><td>$4.000</td><td>$4.500</td></tr>
-                            <tr><td>Capuchino</td><td>$4.500</td><td>$5.000</td></tr>
-                            <tr><td>Latte</td><td>-</td><td>$5.000</td></tr>
-                            <tr><td>Caramel Latte</td><td>-</td><td>$5.500</td></tr>
-                            <tr><td>Matcha Latte</td><td>-</td><td>$5.500</td></tr>
-                            <tr><td>Mocha Blanco</td><td>-</td><td>$5.500</td></tr>
-                            <tr><td>Submarino</td><td>-</td><td>$5.500</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <h3>Fríos (Vaso 14 oz)</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Especialidad</th>
-                                <th>Precio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Latte</td><td>$5.000</td></tr>
-                            <tr><td>Caramel Latte</td><td>$5.500</td></tr>
-                            <tr><td>Banana Caramel Latte</td><td>$5.500</td></tr>
-                            <tr><td>Limonada de Hibiscus y Frambuesa</td><td>$5.000</td></tr>
-                            <tr><td>Frutilla Matcha Latte</td><td>$6.000</td></tr>
-                            <tr><td>Agua sin gas</td><td>$3.000</td></tr>
-                            <tr><td>Vaso de leche</td><td>$3.000</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="contact-grid">
-            <div>
-                <h3>"Hablemos"</h3>
-                <p>IG: <a href="https://instagram.com/ookies.ba">@ookies.ba</a></p>
-            </div>
-            <div>
-                <h3>Eventos & Catering</h3>
-                <p>Mail: <a href="mailto:ookies.adm@gmail.com">ookies.adm@gmail.com</a></p>
-            </div>
-            <div>
-                <h3>Ookies en tu Cafetería</h3>
-                <p>Mail: <a href="mailto:ookies.adm@gmail.com">ookies.adm@gmail.com</a></p>
             </div>
         </div>
-        <p style="font-size: 0.8rem; color: var(--gray);">Desde 2020</p>
+
+        <div id="combos" class="tab-content">
+            <div class="grid">
+                <div class="card reveal">
+                    <h3 class="item-name" style="margin-bottom: 1rem;">Packs de Cookies</h3>
+                    <p class="item-desc">Ideal para compartir o estoquearte.</p>
+                    <table class="price-table">
+                        <tr><td>Pack de 4</td><td class="amount">$24.000</td></tr>
+                        <tr><td>Pack de 6 + <span class="highlight-text">1 GRATIS</span></td><td class="amount">$36.000</td></tr>
+                        <tr><td>Pack de 8</td><td class="amount">$48.000</td></tr>
+                        <tr>
+                            <td>Pack de 12 <br><small style="color: var(--text-muted);">$72.000 original</small></td>
+                            <td class="amount">$57.600 <span class="discount-badge">20% OFF</span></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card reveal">
+                    <h3 class="item-name" style="margin-bottom: 1rem;">Combos con Café</h3>
+                    <p class="item-desc">La combinación perfecta con descuento.</p>
+                    <table class="price-table">
+                        <tr>
+                            <td>1 Cookie + 1 Café Caliente</td>
+                            <td class="amount"><span class="discount-badge" style="margin:0;">10% OFF</span></td>
+                        </tr>
+                        <tr>
+                            <td>2 Cookies + 1 Café Caliente/Frio</td>
+                            <td class="amount"><span class="discount-badge" style="margin:0;">10% OFF</span></td>
+                        </tr>
+                        <tr>
+                            <td>4 Cookies + 2 Cafés (Calientes/Frios)</td>
+                            <td class="amount"><span class="discount-badge" style="margin:0;">15% OFF</span></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card reveal" style="background: var(--primary); color: var(--bg-dark);">
+                    <h3 class="item-name" style="color: var(--bg-dark); margin-bottom: 1rem;">Combo Degustación</h3>
+                    <p style="font-size: 1.1rem; font-weight: 500;">1 cookie de cada sabor disponible.</p>
+                    <div style="font-size: 3rem; font-weight: 900; margin-top: 2rem;">15% OFF</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="cafe" class="tab-content">
+            <p style="text-align: center; margin-bottom: 3rem; color: var(--text-muted);" class="reveal">
+                Tu leche de preferencia: <span class="highlight-text">Entera, Descremada, Deslactosada, Vegana</span>
+            </p>
+            <div class="grid">
+                <div class="card reveal">
+                    <h3 class="item-name">Bebidas Calientes</h3>
+                    <table class="price-table">
+                        <tr><th>Especialidad</th><th>8 oz</th><th>12 oz</th></tr>
+                        <tr><td>Espresso</td><td class="amount">$3.000</td><td class="amount">-</td></tr>
+                        <tr><td>Doppio</td><td class="amount">$3.500</td><td class="amount">-</td></tr>
+                        <tr><td>Americano</td><td class="amount">$3.500</td><td class="amount">-</td></tr>
+                        <tr><td>Flatwhite</td><td class="amount">$4.500</td><td class="amount">-</td></tr>
+                        <tr><td>Lágrima</td><td class="amount">$4.000</td><td class="amount">$4.500</td></tr>
+                        <tr><td>Capuchino</td><td class="amount">$4.500</td><td class="amount">$5.000</td></tr>
+                        <tr><td>Latte</td><td class="amount">-</td><td class="amount">$5.000</td></tr>
+                        <tr><td>Caramel Latte</td><td class="amount">-</td><td class="amount">$5.500</td></tr>
+                        <tr><td>Matcha / Mocha Blanco / Submarino</td><td class="amount">-</td><td class="amount">$5.500</td></tr>
+                    </table>
+                </div>
+
+                <div class="card reveal">
+                    <h3 class="item-name">Bebidas Frías</h3>
+                    <p class="item-desc" style="margin-top: 0.5rem;">Vaso único de 14 oz</p>
+                    <table class="price-table">
+                        <tr><td>Latte</td><td class="amount">$5.000</td></tr>
+                        <tr><td>Caramel Latte / Banana Caramel</td><td class="amount">$5.500</td></tr>
+                        <tr><td>Limonada de Hibiscus y Frambuesa</td><td class="amount">$5.000</td></tr>
+                        <tr><td>Frutilla Matcha Latte</td><td class="amount">$6.000</td></tr>
+                        <tr><td>Vaso de Leche / Agua sin gas</td><td class="amount">$3.000</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="locales" style="background: #0f0f0f;">
+        <h2 class="section-title reveal">Encontranos</h2>
+        <div class="locations-grid reveal">
+            <div class="location-card">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Palermo</h3>
+                <p>Julián Álvarez 2795</p>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Miércoles a Domingos<br>12:00hs a 20:00hs</p>
+            </div>
+            <div class="location-card">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Martinez</h3>
+                <p>UNICENTER</p>
+                <p style="color: var(--text-muted); margin-top: 1rem;">Todos los días<br>10:00hs a 22:00hs</p>
+            </div>
+            <div class="location-card" style="border-top-color: #FF441F;">
+                <h3 style="color: #FF441F; margin-bottom: 1rem; font-size: 1.5rem;">Delivery</h3>
+                <p>Exclusivo por Rappi</p>
+                <a href="#" style="display: inline-block; margin-top: 1rem; color: #FF441F; text-decoration: underline;">Pedir ahora</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-item">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">"Hablemos"</p>
+                <a href="https://instagram.com/ookies.ba" style="font-size: 1.2rem; font-weight: bold;">IG @ookies.ba</a>
+            </div>
+            <div class="footer-item">
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Eventos / Catering / Mayorista</p>
+                <a href="mailto:ookies.adm@gmail.com" style="font-size: 1.2rem; font-weight: bold;">ookies.adm@gmail.com</a>
+            </div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 2rem;">OOKIES Handmade © Desde 2020. Todos los derechos reservados.</p>
     </footer>
 
+    <script>
+        // Lógica de Tabs para el Menú
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Observador de Intersección para animaciones al scrollear (Fade-in / Traslación)
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((element) => {
+            observer.observe(element);
+        });
+    </script>
 </body>
 </html>
